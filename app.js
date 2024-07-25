@@ -1,9 +1,10 @@
+require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
 const pgSession = require('connect-pg-simple')(session);
 const router = require('./routes/router');
 const passport = require('passport');
-const db = require('./db/data');
+const { pool } = require('./db/data');
 require('./db/passport');
 
 const app = express();
@@ -11,10 +12,10 @@ const app = express();
 app.use(
   session({
     store: new pgSession({
-      pool: db,
+      pool: pool,
       tableName: 'session',
     }),
-    secret: 'lol', // Use an environment variable for the secret
+    secret: process.env.SESSION_SECRET, // Use an environment variable for the secret
     resave: false,
     saveUninitialized: true,
     cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 }, // 30 days

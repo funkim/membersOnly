@@ -1,6 +1,6 @@
-<a href="/login"> To view posters or create your own! </a> <br>
-<a href="/register"> Sign up if you haven't already! </a>
+<a href="/post"> Create new post </a>
   <% if (messages.length > 0) { %> <% messages.forEach(message => { %>
+  <h2><%= message.creator %></h2>
   <p><%= message.title%></p>
   <p><%= message.message %></p>
   <% }) %> <% } else { %>
@@ -8,4 +8,3 @@
 
   <% } %>
 </a>
-
