@@ -2,8 +2,9 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const passwordUtils = require('../lib/passwordUtils');
-const { db, messages } = require('../db/data');
+const { messages } = require('../db/data');
 const middleware = require('./middleware');
+const prisma = require('../prisma');
 
 router.get('/', async (req, res) => {
   try {
@@ -49,7 +50,9 @@ router.post('/register', async (req, res, next) => {
   try {
     const { username, password, membership } = req.body;
     const { salt, hash } = passwordUtils.genPassword(password);
-    await db.query('INSERT INTO users (username, membership, hash, salt) VALUES ($1, $2, $3, $4)', [username, membership, hash, salt]);
+    await prisma.user.create({
+      data: { username, membership: !!membership, hash, salt },
+    });
     res.redirect('/login');
   } catch (err) {
     next(err);
@@ -57,11 +60,11 @@ router.post('/register', async (req, res, next) => {
 });
 
 router.get('/login-success', (req, res) => {
-  res.send('<p>You successfully logged in. --> <a href="/dashboard">Go to protected route</a></p>');
+  res.render('login-success');
 });
 
 router.get('/login-failure', (req, res) => {
-  res.send('You entered the wrong password.');
+  res.render('login-failure');
 });
 
 router.get('/dashboard', middleware.isAuthenticated, async (req, res, next) => {
@@ -80,9 +83,10 @@ router.get('/post', middleware.isAuthenticated, (req, res) => {
 router.post('/post', async (req, res, next) => {
   try {
     const { title, message } = req.body;
-    const creator = req.user.username;
-    const timestamp = Math.floor(Date.now() / 1000);
-    await db.query('INSERT INTO messages (title, message, timestamp, creator) VALUES ($1, $2, $3, $4)', [title, message, timestamp, creator]);
+    const creatorId = req.user.id;
+    await prisma.message.create({
+      data: { title, message, creatorId },
+    });
     res.redirect('/dashboard');
   } catch (err) {
     next(err);

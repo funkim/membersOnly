@@ -1,13 +1,35 @@
-<a href="/login"> To view posts or create your own! </a> <br>
-<a href="/register"> Sign up if you haven't already! </a> <br>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome</title>
+    <link rel="stylesheet" href="/styles/style.css" />
+  </head>
+  <body>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/login">Login</a>
+      <a href="/register">Register</a>
+    </nav>
+    <h1>Welcome to The Secret Board!</h1>
+    <h2>Login to Create Your Own and See Users</h2>
 
-<a href="/login">Login</a>
-  <% if (messages.length > 0) { %> <% messages.forEach(message => { %>
-  <p><%= message.title%></p>
-  <p><%= message.message %></p>
-  <% }) %> <% } else { %>
-  <p>No messages yet.</p>
+    <div class="login-link">
+      <a href="/login">Login</a>
+    </div>
 
-  <% } %>
-</a>
-
+    <div class="messages">
+      <% if (messages && messages.length > 0) { %>
+      <h2>Recent Messages</h2>
+      <% messages.forEach(message => { %>
+      <div class="message">
+        <h3><%= message.title %></h3>
+        <p><%= message.message %></p>
+      </div>
+      <% }) %> <% } else { %>
+      <p>No messages yet.</p>
+      <% } %>
+    </div>
+  </body>
+</html>

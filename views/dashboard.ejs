@@ -1,11 +1,27 @@
-<a href="/logout">Logout</a>
-<a href="/post"> Create new post </a>
-  <% if (messages.length > 0) { %> <% messages.forEach(message => { %>
-  <h2><%= message.creator %></h2>
-  <p><%= message.title%></p>
-  <p><%= message.message %></p>
-  <% }) %> <% } else { %>
-  <p>No messages yet.</p>
-
-  <% } %>
-</a>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/styles/style.css" />
+  </head>
+  <body>
+    <nav>
+      <a href="/dashboard">Dashboard</a>
+      <a href="/post">Create Post</a>
+      <a href="/logout">Logout</a>
+    </nav>
+    <h1>Dashboard</h1>
+    <% if (messages.length > 0) { %> <% messages.forEach(message => { %>
+    <div class="message">
+      <h2><%= message.title %></h2>
+      <p>By <%= message.creator%></p>
+      <p><%= message.message %></p>
+      <p><%=message.timestamp%></p>
+    </div>
+    <% }) %> <% } else { %>
+    <p>No messages yet.</p>
+    <% } %>
+  </body>
+</html>

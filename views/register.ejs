@@ -1,9 +1,22 @@
-<form method="post" action="register">
-  <p>Enter Username:</p>
-  <input type="text" name="username" />
-  <p>Enter Password:</p>
-  <input type="text" name="password" />
-  <p>Admin?</p>
-  <input type="checkbox" name="membership" />
-  <input type="submit" />
-</form>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register</title>
+    <link rel="stylesheet" href="/styles/style.css" />
+  </head>
+  <body>
+    <h1>Register</h1>
+    <form method="post" action="register">
+      <p>Username:</p>
+      <input type="text" name="username" required />
+      <p>Password:</p>
+      <input type="password" name="password" required />
+      <p>
+        <label> <input type="checkbox" name="membership" /> Admin? </label>
+      </p>
+      <input type="submit" value="Register" />
+    </form>
+  </body>
+</html>

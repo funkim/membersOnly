@@ -1,21 +1,22 @@
 require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
-const pgSession = require('connect-pg-simple')(session);
+const { PrismaSessionStore } = require('@quixo3/prisma-session-store');
 const router = require('./routes/router');
 const passport = require('passport');
-const { pool } = require('./db/data');
+const prisma = require('./prisma');
 require('./db/passport');
 
 const app = express();
 
 app.use(
   session({
-    store: new pgSession({
-      pool: pool,
-      tableName: 'session',
+    store: new PrismaSessionStore(prisma, {
+      checkPeriod: 2 * 60 * 1000, //ms
+      dbRecordIdIsSessionId: true,
+      dbRecordIdFunction: undefined,
     }),
-    secret: process.env.SESSION_SECRET, // Use an environment variable for the secret
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
     cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 }, // 30 days
@@ -31,5 +32,5 @@ app.use(passport.session());
 
 app.use('/', router);
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Express listening on port ${PORT}`));

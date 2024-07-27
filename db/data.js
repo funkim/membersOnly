@@ -1,18 +1,15 @@
-const { Pool } = require('pg');
-require('dotenv').config();
-
-const db = new Pool({
-  connectionString: process.env.DATABASE_URL,
-});
+const prisma = require('../prisma');
 
 const messages = async () => {
   try {
-    const result = await db.query('SELECT * FROM messages');
-    return result.rows;
+    return await prisma.message.findMany({
+      include: { creator: true },
+      orderBy: { timestamp: 'desc' },
+    });
   } catch (err) {
-    console.error('Error executing query', err.stack);
+    console.error('Error fetching messages', err);
     throw err;
   }
 };
 
-module.exports = { db, messages };
+module.exports = { messages };
