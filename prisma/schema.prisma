@@ -21,8 +21,8 @@ model Message {
   title     String
   message   String
   timestamp DateTime @default(now())
-  creator   User     @relation(fields: [creatorId], references: [id])
-  creatorId Int
+  creator   User     @relation(fields: [Username], references: [username])
+  Username String 
 }
 
 model Session {

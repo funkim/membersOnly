@@ -84,8 +84,9 @@ router.post('/post', async (req, res, next) => {
   try {
     const { title, message } = req.body;
     const creatorId = req.user.id;
+    const creator = req.user.username;
     await prisma.message.create({
-      data: { title, message, creatorId },
+      data: { creator, title, message, creatorId },
     });
     res.redirect('/dashboard');
   } catch (err) {
