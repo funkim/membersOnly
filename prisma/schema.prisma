@@ -14,6 +14,7 @@ model User {
   hash       String
   salt       String
   messages   Message[]
+  folders    Folder[]
 }
 
 model Message {
@@ -21,8 +22,8 @@ model Message {
   title     String
   message   String
   timestamp DateTime @default(now())
-  creator   User     @relation(fields: [Username], references: [username])
-  Username String 
+  creator   User     @relation(fields: [creatorId], references: [id])
+  creatorId Int
 }
 
 model Session {
@@ -30,4 +31,34 @@ model Session {
   sid       String   @unique
   data      String
   expiresAt DateTime
+}
+
+model Folder {
+  id           Int            @id @default(autoincrement())
+  name         String
+  userId       Int
+  user         User           @relation(fields: [userId], references: [id])
+  files        File[]
+  sharedFolders SharedFolder[]
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+}
+
+model File {
+  id        Int      @id @default(autoincrement())
+  name      String
+  url       String
+  size      Int
+  folderId  Int
+  folder    Folder   @relation(fields: [folderId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SharedFolder {
+  id        String   @id @default(uuid())
+  folderId  Int
+  folder    Folder   @relation(fields: [folderId], references: [id])
+  expiresAt DateTime
+  createdAt DateTime @default(now())
 }

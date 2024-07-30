@@ -16,7 +16,7 @@
     <% if (messages.length > 0) { %> <% messages.forEach(message => { %>
     <div class="message">
       <h2><%= message.title %></h2>
-      <p>By <%= message.creator%></p>
+      <p>By <%= message.creator.username %></p>
       <p><%= message.message %></p>
       <p><%=message.timestamp%></p>
     </div>
